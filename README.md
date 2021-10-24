@@ -31,6 +31,6 @@ repositories {
     }
 }
 dependencies {
-    compileOnly 'io.ib67:Youdao4J:$RELEASE_VERSION'
+    compileOnly 'io.ib67.trans:youdao4j:$RELEASE_VERSION'
 }
 ```
