@@ -57,9 +57,6 @@ public class Youdao4J {
         }
     }
 
-    public static void a() {
-    }
-
     /**
      * Build a translator using default arguments.
      *
