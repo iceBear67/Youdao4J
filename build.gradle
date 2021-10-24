@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+}
+apply plugin: "maven-publish"
+
+group 'io.ib67'
+version '0.0.1'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testImplementation 'com.google.code.gson:gson:2.8.8'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    compileOnly 'com.google.code.gson:gson:2.8.8'
+}
+publishing {
+    repositories {
+        maven {
+            name = "GitHub"
+            url = uri("https://maven.pkg.github.com/iceBear67/Youdao4J")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            from components.java
+        }
+    }
+}
+test {
+    useJUnitPlatform()
+}
