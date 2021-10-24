@@ -4,8 +4,7 @@ Translating texts via [Youdao Translator](https://fanyi.youdao.com/) by one clas
 Need GSON.
 
 # Usage
-Youdao4J did lots of works in the background. **DO NOT** create the second Youdao4J Object because it's unnecessary. You
-don't have to worry about token expiration or cookie expiration, which are Youdao4J hold automatically.
+Youdao4J did lots of works in the background. **DO NOT** create morr Youdao4J Object. You dont need to worry about token expiration or cookie expiration, which are Youdao4J held automatically.
 
 ```java
 public class Showcase {
@@ -18,19 +17,5 @@ public class Showcase {
         }, "Nullcat sb");
         Assertions.assertEquals(Youdao4J.fromDefault(), Youdao4J.fromDefault()); // They're equal.
     }
-}
-```
-
-# As a dependency
-
-```groovy
-repositories {
-    maven {
-        name = "Youdao4J"
-        url = "https://maven.pkg.github.com/iceBear67/Youdao4J"
-    }
-}
-dependencies {
-    compileOnly 'io.ib67.trans:youdao4j:$RELEASE_VERSION'
 }
 ```
