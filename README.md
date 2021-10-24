@@ -10,7 +10,7 @@ don't have to worry about token expiration or cookie expiration, which are Youda
 ```java
 public class Showcase {
     {
-        var yd = Youdao4J.fromDefault(); // lazy-loading and cached. Recommended.
+        var yd = Youdao4J.fromDefault(); // lazy-loaded and cached. Recommended.
         var advancedYd = Youdao4J.from(HttpClient.newBuilder(), Duration.ofMinutes(30), "Firefox UA"); // If you need to specific User-Agent, HTTP Proxy, Cache-Control etc.
         yd.translate(Youdao4J.LanguageType.AUTO, Youdao4J.LanguageType.CHINESE, "Nullcat sb"); // Translate synchronously.
         yd.translateAsync(Youdao4J.LanguageType.AUTO, Youdao4J.LanguageType.CHINESE, translated -> { // Translate Asynchronously. Threads are held by Http Clients
