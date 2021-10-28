@@ -92,9 +92,14 @@ public class Youdao4J {
     private static String processResponse(String resp, int stringBuilderCapacity) {
         var jo = JsonParser.parseString(resp);
         var result = new StringBuilder(stringBuilderCapacity);
-        for (JsonElement translateResult : jo.getAsJsonObject().getAsJsonArray("translateResult")) {
-            var tran = GSON.fromJson(translateResult.getAsJsonArray().get(0), Translation.class);
-            result.append(tran.translated.isEmpty() ? "\n" : tran.translated);
+        System.out.println(resp);
+        for (JsonElement _translateResult : jo.getAsJsonObject().getAsJsonArray("translateResult")) {
+            System.out.println(_translateResult.toString());
+            var arr = _translateResult.getAsJsonArray();
+            for(JsonElement translateResult :arr){
+                var tran = GSON.fromJson(translateResult, Translation.class);
+                result.append(tran.translated.isEmpty() ? "\n" : tran.translated);
+            }
         }
         return result.toString();
     }
