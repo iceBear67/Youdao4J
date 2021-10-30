@@ -40,7 +40,7 @@ public class Youdao4J {
     private final HttpClient httpClient;
     private final String userAgent;
     private ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-    private volatile String token; // we don't need fully thread-safe. ( tokens aren't often updated )
+    private volatile String token; // lesser thread-safe
 
     private Youdao4J(HttpClient httpClient, long cachingTime, String userAgent) {
         this.httpClient = httpClient;
@@ -58,7 +58,7 @@ public class Youdao4J {
     }
 
     /**
-     * Build a translator using default arguments.
+     * Getting a translator from default arguments.
      *
      * @return
      */
@@ -92,9 +92,7 @@ public class Youdao4J {
     private static String processResponse(String resp, int stringBuilderCapacity) {
         var jo = JsonParser.parseString(resp);
         var result = new StringBuilder(stringBuilderCapacity);
-        System.out.println(resp);
         for (JsonElement _translateResult : jo.getAsJsonObject().getAsJsonArray("translateResult")) {
-            System.out.println(_translateResult.toString());
             var arr = _translateResult.getAsJsonArray();
             for(JsonElement translateResult :arr){
                 var tran = GSON.fromJson(translateResult, Translation.class);
@@ -246,6 +244,7 @@ public class Youdao4J {
 
     public static class Credential {
         private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
+        // BV : md5(navigator.version)
         private final String bv = "1de9313c44872e4c200c577f99d4c09e"; // constant data. (24/10/2021)
         private String salt;
         private String sign;

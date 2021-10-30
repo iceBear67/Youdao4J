@@ -4,7 +4,8 @@ Translating texts via [Youdao Translator](https://fanyi.youdao.com/) by one clas
 Need GSON.
 
 # Usage
-Youdao4J did lots of works in the background. **DO NOT** create morr Youdao4J Object. You dont need to worry about token expiration or cookie expiration, which are Youdao4J held automatically.
+Youdao4J did lots of works in the background. **DO NOT** create morr Youdao4J Object.   
+Token expiration or cookie expiration are held automatically.
 
 ```java
 public class Showcase {
