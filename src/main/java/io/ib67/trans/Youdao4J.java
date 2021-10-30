@@ -40,7 +40,7 @@ public class Youdao4J {
     private final HttpClient httpClient;
     private final String userAgent;
     private ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-    private volatile String token; // lesser thread-safe
+    private String token; // lesser thread-safe
 
     private Youdao4J(HttpClient httpClient, long cachingTime, String userAgent) {
         this.httpClient = httpClient;
@@ -115,8 +115,10 @@ public class Youdao4J {
      * @return Translation. NotNull
      */
     public String translate(LanguageType from, LanguageType to, String originalText) {
-        if (token == null) {
-            throw new TranslationException("Token is null.");
+        synchronized (token) {
+            if (token == null) {
+                throw new TranslationException("Token is null.");
+            }
         }
         try {
             var resp = httpClient.send(buildRequest(from, to, originalText), HttpResponse.BodyHandlers.ofString());
@@ -153,8 +155,10 @@ public class Youdao4J {
      * @param originalText text to be translated.
      */
     public void translateAsync(LanguageType from, LanguageType to, Consumer<? super String> callback, int timeOutSec, String originalText) {
-        if (token == null) {
-            throw new TranslationException("Token is null.");
+        synchronized (token) {
+            if (token == null) {
+                throw new TranslationException("Token is null.");
+            }
         }
         httpClient.sendAsync(buildRequest(from, to, originalText), HttpResponse.BodyHandlers.ofString())
                 .orTimeout(timeOutSec, TimeUnit.SECONDS)
@@ -173,13 +177,15 @@ public class Youdao4J {
 
     private HttpRequest buildRequest(LanguageType from, LanguageType to, String originalText) {
         var payload = new StringBuilder(originalText.length() + 256);
-        payload.append("i=").append(escapeChars(originalText))
-                .append("&from=").append(from.data)
-                .append("&to=").append(to.data)
-                .append("&smartresult=dict&client=").append(CLIENT)
-                .append('&').append(Credential.of(token, originalText))
-                .append("&doctype=json&version=").append(VERSION)
-                .append("&keyfrom=fanyi.web&action=FY_BY_CLICKBUTTION");
+        synchronized (token) {
+            payload.append("i=").append(escapeChars(originalText))
+                    .append("&from=").append(from.data)
+                    .append("&to=").append(to.data)
+                    .append("&smartresult=dict&client=").append(CLIENT)
+                    .append('&').append(Credential.of(token, originalText))
+                    .append("&doctype=json&version=").append(VERSION)
+                    .append("&keyfrom=fanyi.web&action=FY_BY_CLICKBUTTION");
+        }
         var str = payload.toString();
         //System.out.println(str);
         return HttpRequest
@@ -318,7 +324,9 @@ public class Youdao4J {
                 if (!mch.find()) {
                     throw new IllegalStateException("Can't match token");
                 }
-                token = mch.group(2);
+                synchronized (token) {
+                    token = mch.group(2);
+                }
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
