@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
  *
  * @author iceBear
  */
-public class Youdao4J {
+public final class Youdao4J {
     private static final String API_URL = "https://fanyi.youdao.com/translate_o?smartresult=dict&smartresult=rule";
     private static final String CLIENT = "fanyideskweb";
     private static final String VERSION = "2.1";
@@ -327,7 +327,7 @@ public class Youdao4J {
                 synchronized (token) {
                     token = mch.group(2);
                 }
-            } catch (IOException | InterruptedException e) {
+            } catch (Throwable e) {
                 e.printStackTrace();
             }
         }
