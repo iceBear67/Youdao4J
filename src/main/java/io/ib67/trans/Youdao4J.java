@@ -115,7 +115,7 @@ public final class Youdao4J {
      * @return Translation. NotNull
      */
     public String translate(LanguageType from, LanguageType to, String originalText) {
-        synchronized (token) {
+        synchronized (this) {
             if (token == null) {
                 throw new TranslationException("Token is null.");
             }
@@ -155,7 +155,7 @@ public final class Youdao4J {
      * @param originalText text to be translated.
      */
     public void translateAsync(LanguageType from, LanguageType to, Consumer<? super String> callback, int timeOutSec, String originalText) {
-        synchronized (token) {
+        synchronized (this) {
             if (token == null) {
                 throw new TranslationException("Token is null.");
             }
@@ -177,7 +177,7 @@ public final class Youdao4J {
 
     private HttpRequest buildRequest(LanguageType from, LanguageType to, String originalText) {
         var payload = new StringBuilder(originalText.length() + 256);
-        synchronized (token) {
+        synchronized (this) {
             payload.append("i=").append(escapeChars(originalText))
                     .append("&from=").append(from.data)
                     .append("&to=").append(to.data)
@@ -324,7 +324,7 @@ public final class Youdao4J {
                 if (!mch.find()) {
                     throw new IllegalStateException("Can't match token");
                 }
-                synchronized (token) {
+                synchronized (this) {
                     token = mch.group(2);
                 }
             } catch (Throwable e) {
