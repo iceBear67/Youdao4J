@@ -16,21 +16,23 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
     compileOnly 'com.google.code.gson:gson:2.8.8'
 }
-publishing {
-    repositories {
-        maven {
-            name = "bukkit.rip"
-            url = uri("https://mvn.bukkit.rip/releases")
-            credentials {
-                username = bkrip_user
-                password = bkrip_token
+if (System.getProperty("user.name").contains("icybear")) {
+    publishing {
+        repositories {
+            maven {
+                name = "bukkit.rip"
+                url = uri("https://mvn.bukkit.rip/releases")
+                credentials {
+                    username = bkrip_user
+                    password = bkrip_token
+                }
             }
         }
-    }
-    publications {
-        gpr(MavenPublication) {
-            artifactId 'youdao4j'
-            from components.java
+        publications {
+            gpr(MavenPublication) {
+                artifactId 'youdao4j'
+                from components.java
+            }
         }
     }
 }
