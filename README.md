@@ -1,6 +1,6 @@
 # Youdao4J
 
-Translating texts via [Youdao Translator](https://fanyi.youdao.com/) by one class.  
+Translating texts via [Youdao Translator](https://fanyi.youdao.com/) by one class.    
 Need GSON.
 
 # Usage
@@ -8,14 +8,16 @@ Youdao4J did lots of works in the background. **DO NOT** create morr Youdao4J Ob
 Token expiration or cookie expiration are held automatically.
 
 ```java
+import java.util.concurrent.CompletableFuture;
+
 public class Showcase {
     {
-        var yd = Youdao4J.fromDefault(); // lazy-loaded and cached. Recommended.
-        var advancedYd = Youdao4J.from(HttpClient.newBuilder(), Duration.ofMinutes(30), "Firefox UA"); // If you need to specific User-Agent, HTTP Proxy, Cache-Control etc.
+        var yd = Youdao4J.fromDefault(); // The default one is lazy-loaded and cached in memory.
+        var advancedYd = Youdao4J.from(HttpClient.newBuilder(), Duration.ofMinutes(30), "Firefox UA ..?"); // If you need to specific User-Agent, HTTP Proxy, Cache-Control etc.
         yd.translate(Youdao4J.LanguageType.AUTO, Youdao4J.LanguageType.CHINESE, "Nullcat sb"); // Translate synchronously.
-        yd.translateAsync(Youdao4J.LanguageType.AUTO, Youdao4J.LanguageType.CHINESE, translated -> { // Translate Asynchronously. Threads are held by Http Clients
-            //...
-        }, "Nullcat sb");
+        CompletableFuture<String> future = yd.translateAsync(Youdao4J.LanguageType.AUTO, Youdao4J.LanguageType.CHINESE, "Nullcat sb"); // Translate Asynchronously. Threads are held by Http Clients
+        future.thenAccept(System.out::println); // Print the result.
+
         Assertions.assertEquals(Youdao4J.fromDefault(), Youdao4J.fromDefault()); // They're equal.
     }
 }
