@@ -18,11 +18,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.Locale;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
+import java.util.concurrent.*;
 import java.util.regex.Pattern;
 
 /**
@@ -138,11 +134,10 @@ public final class Youdao4J {
      *
      * @param from         from which language. AUTO is available.
      * @param to           to which language. AUTO is available.
-     * @param callback     for translation. not null
      * @param originalText text to be translated.
      */
-    public void translateAsync(LanguageType from, LanguageType to, Consumer<? super String> callback, String originalText) {
-        translateAsync(from, to, callback, 10, originalText);
+    public CompletableFuture<String> translateAsync(LanguageType from, LanguageType to, String originalText) {
+        return translateAsync(from, to, 10, originalText);
     }
 
     /**
@@ -150,17 +145,16 @@ public final class Youdao4J {
      *
      * @param from         from which language. AUTO is available.
      * @param to           to which language.
-     * @param callback     for translation. not null
      * @param timeOutSec   time to be timeout
      * @param originalText text to be translated.
      */
-    public void translateAsync(LanguageType from, LanguageType to, Consumer<? super String> callback, int timeOutSec, String originalText) {
+    public CompletableFuture<String> translateAsync(LanguageType from, LanguageType to, int timeOutSec, String originalText) {
         synchronized (this) {
             if (token == null) {
                 throw new TranslationException("Token is null.");
             }
         }
-        httpClient.sendAsync(buildRequest(from, to, originalText), HttpResponse.BodyHandlers.ofString())
+        return httpClient.sendAsync(buildRequest(from, to, originalText), HttpResponse.BodyHandlers.ofString())
                 .orTimeout(timeOutSec, TimeUnit.SECONDS)
                 .whenComplete((response, throwable) -> {
                     if (throwable != null) {
@@ -171,8 +165,7 @@ public final class Youdao4J {
                     }
                 })
                 .thenApply(HttpResponse::body)
-                .thenApply(body -> processResponse(body, body.length()))
-                .thenAccept(callback);
+                .thenApply(body -> processResponse(body, body.length()));
     }
 
     private HttpRequest buildRequest(LanguageType from, LanguageType to, String originalText) {

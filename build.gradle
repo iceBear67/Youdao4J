@@ -4,7 +4,7 @@ plugins {
 apply plugin: "maven-publish"
 
 group 'io.ib67.trans'
-version '0.0.4'
+version '0.1.0'
 
 repositories {
     mavenCentral()
@@ -19,11 +19,11 @@ dependencies {
 publishing {
     repositories {
         maven {
-            name = "GitHub"
-            url = uri("https://maven.pkg.github.com/iceBear67/Youdao4J")
+            name = "bukkit.rip"
+            url = uri("https://mvn.bukkit.rip/releases")
             credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
+                username = bkrip_user
+                password = bkrip_token
             }
         }
     }
