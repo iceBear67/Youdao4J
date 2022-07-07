@@ -32,7 +32,7 @@ public final class Youdao4J {
     private static final String VERSION = "2.1";
     private static final Gson GSON = new GsonBuilder().create();
     private static final Pattern FANYIJS_REGEX = Pattern.compile("(https:\\/\\/shared.ydstatic.com\\/.*fanyi.min.js)");
-    private static final Pattern TOKEN_REGEX = Pattern.compile("(\"" + CLIENT + "\"\\+.*\")(.*)(\"\\)}};)");
+    private static final Pattern TOKEN_REGEX = Pattern.compile("(n.md5\\(\"fanyideskweb\".+?\")(.+?)(\"\\) } )");
     private final HttpClient httpClient;
     private final String userAgent;
     private ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
@@ -180,7 +180,7 @@ public final class Youdao4J {
                     .append("&keyfrom=fanyi.web&action=FY_BY_CLICKBUTTION");
         }
         var str = payload.toString();
-        //System.out.println(str);
+        //System.out.println(str.replaceAll("\\&","\n"));
         return HttpRequest
                 .newBuilder(URI.create(API_URL))
                 .header("User-Agent", userAgent)
@@ -258,6 +258,7 @@ public final class Youdao4J {
             cred.time = time;
             // Calculate sign
             var msg = CLIENT + translatingText + cred.salt + token;
+            //   System.out.println(msg);
             try {
                 MessageDigest digest = MessageDigest.getInstance("MD5");
                 digest.update(msg.getBytes(StandardCharsets.UTF_8));
