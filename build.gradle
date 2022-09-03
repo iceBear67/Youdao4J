@@ -1,7 +1,7 @@
 plugins {
     id 'java'
+    id("me.him188.maven-central-publish") version "1.0.0-dev-3"
 }
-apply plugin: "maven-publish"
 
 group 'io.ib67.trans'
 version '0.1.0'
@@ -16,25 +16,19 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
     compileOnly 'com.google.code.gson:gson:2.8.8'
 }
-if (System.getProperty("user.name").contains("icybear")) {
-    publishing {
-        repositories {
-            maven {
-                name = "bukkit.rip"
-                url = uri("https://mvn.bukkit.rip/releases")
-                credentials {
-                    username = bkrip_user
-                    password = bkrip_token
-                }
-            }
-        }
-        publications {
-            gpr(MavenPublication) {
-                artifactId 'youdao4j'
-                from components.java
-            }
-        }
-    }
+mavenCentralPublish {
+    useCentralS01()
+    projectName = "Youdao4J"
+    artifactId = project.name
+    groupId = this.group
+    description("Translating texts via Youdao eco-freely in only one class")
+    projectUrl("https://github.com/iceBear67/Youdao4J")
+    workingDir = file("/tmp/a")
+
+    connection = "scm:git:git://github.com/iceBear67/Youdao4J"
+    licenseMit()
+
+    developer("iceBear67")
 }
 test {
     useJUnitPlatform()

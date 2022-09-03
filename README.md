@@ -25,12 +25,9 @@ public class Showcase {
 
 # Add as dependency
 
+Youdao4J is now on Maven Central.
+
 ```groovy
-repositories {
-    maven {
-        url "https://mvn.bukkit.rip/releases"
-    }
-}
 dependencies {
     implementation("io.ib67.trans:youdao4j:$VERSION")
 }
