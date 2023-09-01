@@ -1,3 +1,10 @@
+# Project Archived
+
+Youdao has deployed a new frontend which uses Webpack and I have no time to make my crawler adapt to it.  
+So, this project is permanently ARCHIVED, or I'll back if I need this again.
+
+---
+
 # Youdao4J
 
 Translating texts via [Youdao Translator](https://fanyi.youdao.com/) by one class.    
