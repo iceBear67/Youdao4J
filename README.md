@@ -3,6 +3,10 @@
 Youdao has deployed a new frontend which uses Webpack and I have no time to make my crawler adapt to it.  
 So, this project is permanently ARCHIVED, or I'll back if I need this again.
 
+Notably, the old translator API seems unchanged.   
+If you're trying to make another crawler, this repo
+and [youdao.max.js](https://gist.github.com/iceBear67/9b62aa0903bc1ad3e4300ea994a85282) may be helpful.
+
 ---
 
 # Youdao4J
